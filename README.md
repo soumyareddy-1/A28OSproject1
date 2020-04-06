@@ -1,3 +1,4 @@
+//question 2 code where multi-threading is used
 #include<stdio.h>
 #include<unistd.h>
 #include<stdlib.h>
@@ -28,7 +29,6 @@ int main()
 	pthread_create(&thread_for_minimum,NULL,minimumfunction,p);//creating thread for calculating minimum all the entered numbers
 	pthread_join(thread_for_minimum,NULL);
 	//p is passed as argument to the function whose thread is created
-	
 }
 void *averagefunction(void *p) //this function is created as thread which calculates and prints average of entered numbers
 {
@@ -69,4 +69,51 @@ void *minimumfunction(void *p) //this function is created as thread which calcul
 	}
 	printf("the minimum number among all the entered numbers is %d\n",minimum);
 	return NULL;
+}
+//question 25 code where interprocess comuunication is used
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+int main()
+{
+	int n;
+	int mypipe1[2];
+	int mypipe2[2];
+	pipe(mypipe1);
+	pipe(mypipe2);
+	printf("enter the length of the string");
+	scanf("%d",&n);
+	char buf1[n];
+	printf("enter string ");
+	scanf("%s",buf1);
+	void fun2()
+	{
+		int i,t;
+		char buf2[n];
+		read(mypipe1[0],buf2,n);
+		for(i=0;i<n;i++)
+		{
+			t=buf2[i];
+			if(t<=90)
+			{
+				t=t+32;
+				buf2[i]=t;
+			}
+			else if(t>=97)
+			{
+				t=t-32;
+				buf2[i]=t;
+			}
+		}
+		write(mypipe2[1],buf2,n);
+	}
+	void fun1()
+	{
+		char buf3[n];
+		write(mypipe1[1],buf1,n);
+		fun2();
+		read(mypipe2[0],buf3,n);
+		printf("the final string is %s",buf3);
+	}
+	fun1();
 }
