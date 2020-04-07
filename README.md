@@ -75,6 +75,7 @@ void *minimumfunction(void *p) //this function is created as thread which calcul
 	return NULL;
 }
 //question 25 code where interprocess comuunication is used
+//two pipes are created in the program to transfer data between to processes
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
