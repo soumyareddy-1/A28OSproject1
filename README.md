@@ -15,6 +15,10 @@ int main()
 	pthread_t thread_for_average,thread_for_maximum,thread_for_minimum;
 	printf("enter no of numbers");
 	scanf("%d",&no_of_numbers);
+	if(no_of_numbers==0)
+	{
+	  printf("the number of numbers entered is zero");
+	}
 	int array[no_of_numbers];
 	p=(int*)array;
 	for(loop_var=0;loop_var<no_of_numbers;loop_var++)
