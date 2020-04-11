@@ -7,7 +7,7 @@
 void *averagefunction(void *);
 void *maximumfunction(void *);
 void *minimumfunction(void *);
-int no_of_numbers;
+int no_of_numbers,average=0,maximum=0,minimum;
 void *p;
 int main()
 {
@@ -33,37 +33,35 @@ int main()
 	pthread_create(&thread_for_minimum,NULL,minimumfunction,p);//creating thread for calculating minimum all the entered numbers
 	pthread_join(thread_for_minimum,NULL);
 	//p is passed as argument to the function whose thread is created
+	printf("\nthe mean or average of the entered numbers is %d \n",average);
+	printf("the minimum number among all the entered numbers is %d\n",minimum);
+	printf("the maximum number among all the entered numbers is %d \n",maximum);
 }
 void *averagefunction(void *p) //this function is created as thread which calculates and prints average of entered numbers
 {
 	int loop_var1;
-	int average=0;
 	for(loop_var1=0;loop_var1<no_of_numbers;loop_var1++)
 	{
 		average=average+(*(int *)p);
 		p=p+4;
 	}
 	average=(average/no_of_numbers);
-	printf("\nthe mean or average of the entered numbers is %d \n",average);
 	return NULL;
 }
 void *maximumfunction(void *p)	//this function is created as thread which calculates and prints maximum of all entered numbers
 {
 	int loop_var2;
-	int maximum=0;
 	for(loop_var2=0;loop_var2<no_of_numbers;loop_var2++)
 	{
 		if(*(int *)p>maximum)
 		maximum=*(int *)p;
 		p=p+4;
 	}
-	printf("the maximum number among all the entered numbers is %d \n",maximum);
 	return NULL;
 }
 void *minimumfunction(void *p) //this function is created as thread which calculates and prints minimum of entered numbers
 {
 	int loop_var3;
-	int minimum;
 	minimum=*(int *)p;
 	for(loop_var3=0;loop_var3<no_of_numbers;loop_var3++)
 	{
@@ -71,7 +69,6 @@ void *minimumfunction(void *p) //this function is created as thread which calcul
 		minimum=*(int *)p;
 		p=p+4;
 	}
-	printf("the minimum number among all the entered numbers is %d\n",minimum);
 	return NULL;
 }
 //question 25 code where interprocess comuunication is used
@@ -99,12 +96,12 @@ int main()
 		for(i=0;i<n;i++)
 		{
 			t=buf2[i];
-			if(t<=90)
+			if((t>=65)&&(t<=90))
 			{
 				t=t+32;
 				buf2[i]=t;
 			}
-			else if(t>=97)
+			else if((t>=97)&&(t<=122))
 			{
 				t=t-32;
 				buf2[i]=t;
